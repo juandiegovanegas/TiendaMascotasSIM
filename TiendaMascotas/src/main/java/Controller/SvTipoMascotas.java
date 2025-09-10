@@ -39,6 +39,7 @@ public class SvTipoMascotas extends HttpServlet {
 
 		// Acción LISTAR: muestra todos los tipos de mascotas
 		
+		
 		String accion = request.getParameter("accion");
 
 		if ("listar".equals(accion)) {

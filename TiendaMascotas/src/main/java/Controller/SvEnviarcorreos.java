@@ -21,7 +21,10 @@ public class SvEnviarcorreos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //  Obtener parámetros del formulario
+        /* Obtener parámetros del formulario enviados por el cliente
+    	 "to" que esto significa la direccion del correo electronico del destinatario
+    	 "subject" que esto significa el asunto del correo
+    	 "messageText" que esto viene siendo el cuerpo del correo*/
         String to = request.getParameter("destinario"); 
         String subject = request.getParameter("asunto"); 
         String messageText = request.getParameter("mensaje");
@@ -29,18 +32,18 @@ public class SvEnviarcorreos extends HttpServlet {
         
         
 
-        //  Credenciales del remitente 
+        //  Datos del remitente las cuales son el correo electronico y la contraseña
         final String username = "jvanegasmunoz569@gmail.com"; // correo
         final String password = "pgpy kbii vvnx vowa";       // contraseña 
 
         // Configuración del servidor SMTP (Gmail)
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true"); //habilitar auntentiación SMTP
+        props.put("mail.smtp.starttls.enable", "true");// habilitar STARTTLS para cifrado
+        props.put("mail.smtp.host", "smtp.gmail.com"); // servidor SMTP de gmail
+        props.put("mail.smtp.port", "587"); // puerto SMTP para STARTTLS
 
-        // Crear sesión
+        // Crear sesión con los datos del remitente
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -54,7 +57,7 @@ public class SvEnviarcorreos extends HttpServlet {
         
   
         try {
-            // Crear mensaje
+            // Crear mensaje del correo
         	Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));       // remitente
             message.addRecipient(Message.RecipientType.TO, 
@@ -62,8 +65,8 @@ public class SvEnviarcorreos extends HttpServlet {
             message.setSubject(subject);                          // asunto
             message.setText(messageText);                         // mensaje simple
 
-           
-            // Enviar mensaje
+            
+            // Enviar mensaje a traves del servidor SMTP ya configurado
             Transport.send(message);
 
             

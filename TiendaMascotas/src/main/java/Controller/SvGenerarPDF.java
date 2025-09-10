@@ -28,21 +28,21 @@ public class SvGenerarPDF extends HttpServlet {
 			response.setHeader("Content-Disposition", "attachment; filename=ReporteClientes.pdf");
 
 			
-			// Crear un documento PDF
+			// Crea el documento pdf
 			
 			try {
 				Document document = new Document();
 				PdfWriter.getInstance(document, response.getOutputStream());
 				document.open();
 
-				// Título
+				// Aca crea el titulo 
 				Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
 				Paragraph title = new Paragraph("Reporte de Animales Registrados", titleFont);
 				title.setAlignment(Element.ALIGN_CENTER);
 				title.setSpacingAfter(20);
 				document.add(title);
 
-				// Tabla
+				// Tabla del documento el cual solo va tener 3 columnas que va ser el id tipo, nombre y observaciones
 				PdfPTable table = new PdfPTable(3); // solo 3 columnas
 				table.setWidthPercentage(100);
 				table.setSpacingBefore(10f);
@@ -56,7 +56,7 @@ public class SvGenerarPDF extends HttpServlet {
 					table.addCell(cell);
 				}
 
-				// Consulta a la base de datos
+				// Consulta a la base de datos si la informacion es correcta
 				Connection con = Conexion.conectarBD();
 				String sql = "SELECT id_tipo, nombre, observaciones FROM tbltipo_mascotas";
 				PreparedStatement pst = con.prepareStatement(sql);

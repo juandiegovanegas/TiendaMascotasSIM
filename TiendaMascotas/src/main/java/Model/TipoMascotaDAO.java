@@ -21,7 +21,17 @@ import jakarta.servlet.ServletException;
 
 public class TipoMascotaDAO {
 
-	// Obtiene todos los tipos de mascotas desde la base de datos.
+	
+	 /* Obtiene todos los tipos de mascota desde la base de datos.
+	 *
+	 * Ejecuta la consulta  SELECT * FROM tbltipo_mascotas, 
+	 * mapea los resultados a objetos de TipoMascota y los 
+	 * agrega a una lista.
+	 *
+	 * retorna lista de TipoMascota, o vacía si no hay resultados
+	 *         o ocurre un error.
+	 */
+	
 	public List<TipoMascota> listar() {
 		List<TipoMascota> lista = new ArrayList<>();
 		String sql = "SELECT * FROM tbltipo_mascotas";
@@ -45,7 +55,15 @@ public class TipoMascotaDAO {
 		return lista;
 	}
 
-	// Inserta un nuevo tipo de mascota
+	/**
+	 * Inserta un nuevo tipo de mascota en la base de datos.
+	 *
+	 * Ejecuta un  INSERT en la tabla {@code tbltipo_mascotas} 
+	 * usando los datos del objeto TipoMascota}.
+	 * 
+	 * objeto TipoMascota con el nombre y observaciones a guardar.
+	 * el ServletException si ocurre un error en la ejecución del servlet.
+	 */
 	public void create(TipoMascota m) throws ServletException {
 		String sql = "INSERT INTO tbltipo_mascotas (nombre,observaciones) VALUES (?, ?)";
 		try (Connection con = Conexion.conectarBD(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -62,6 +80,10 @@ public class TipoMascotaDAO {
 		}
 	}
 
+	
+	/*Aca hacemos cada que alguien inserte una mascota nueva en la base 
+	 * de datos nos envie un correo informando que ha inscrito una nueva mascota*/
+	
 	public void crearmascota(String asunto, String mensaje) throws ServletException {
 
 		final String username = "jvanegasmunoz569@gmail.com";
@@ -97,7 +119,10 @@ public class TipoMascotaDAO {
 		}
 	}
 
-	// Actualiza un tipo de mascota existente
+	/* Actualiza un tipo de mascota existente
+	 * obtiendo los datos de la base de datos que podemos modificar son el nombre
+	 * y las observaciones
+	 * */
 	public void update(TipoMascota m) throws ServletException {
 		String sql = "UPDATE tbltipo_mascotas SET nombre = ?, observaciones = ? WHERE id_tipo = ?";
 		try (Connection con = Conexion.conectarBD(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -114,6 +139,9 @@ public class TipoMascotaDAO {
 		}
 	}
 
+	/*Aca envia un correo cuando una mascota sea actualizado en la pagina
+	 * nos enviara un correo notificando sobre este cambio */
+	
 	public void actualizarmascota(String asunto, String mensaje) throws ServletException {
 
 		final String username = "jvanegasmunoz569@gmail.com";
@@ -149,7 +177,7 @@ public class TipoMascotaDAO {
 		}
 	}
 
-	// Buscar por ID
+	// Buscamos una mascota por su ID que esta registrada en la base de datos
 	public TipoMascota buscarPorId(int id) {
 		TipoMascota tm = null;
 		String sql = "SELECT * FROM tbltipo_mascotas WHERE id_tipo = ?";
@@ -168,7 +196,7 @@ public class TipoMascotaDAO {
 		return tm;
 	}
 
-	// Eliminar por ID
+	// Eliminamos una mascota mediante su id que esta en la base de datos
 	public void delete(int id) throws ServletException {
 		String sql = "DELETE FROM tbltipo_mascotas WHERE id_tipo = ?";
 		try (Connection con = Conexion.conectarBD(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -183,6 +211,8 @@ public class TipoMascotaDAO {
 		}
 	}
 
+	
+	//Aca nos enviaran un correo cuando una mascota sea eliminada mediante por su id
 	public void eliminarmascota(String asunto, String mensaje) throws ServletException {
 
 		final String username = "jvanegasmunoz569@gmail.com";
